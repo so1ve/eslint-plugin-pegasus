@@ -1,4 +1,4 @@
-import { ESLintUtils } from "@typescript-eslint/utils";
+import { AST_NODE_TYPES } from "@typescript-eslint/utils";
 
 import { createRule } from "../utils";
 import { isMethodCall } from "../utils/ast";
@@ -23,22 +23,22 @@ export default createRule<Options, MessageIds>({
 	},
 	defaultOptions: [],
 	create: (context) => {
-		const services = ESLintUtils.getParserServices(context);
+		// const services = ESLintUtils.getParserServices(context);
 
 		return {
-			CallExpression(callExpression) {
+			CallExpression(node) {
 				if (
 					!(
-						isMethodCall(callExpression, {
+						isMethodCall(node, {
 							method: "flat",
 							optionalCall: false,
 							optionalMember: false,
 						}) &&
-						(callExpression.arguments.length === 0 ||
-							(callExpression.arguments.length === 1 &&
-								callExpression.arguments[0].type === "Literal" &&
-								callExpression.arguments[0].raw === "1")) &&
-						isMethodCall(callExpression.callee.object, {
+						(node.arguments.length === 0 ||
+							(node.arguments.length === 1 &&
+								node.arguments[0].type === "Literal" &&
+								node.arguments[0].raw === "1")) &&
+						isMethodCall(node.callee.object, {
 							method: "map",
 							optionalCall: false,
 							optionalMember: false,
@@ -48,18 +48,29 @@ export default createRule<Options, MessageIds>({
 					return;
 				}
 
-				const flatCallExpression = callExpression;
+				const flatCallExpression = node;
+				if (
+					flatCallExpression.callee.type !== AST_NODE_TYPES.MemberExpression
+				) {
+					return;
+				}
 				const mapCallExpression = flatCallExpression.callee.object;
+				if (
+					mapCallExpression.type !== AST_NODE_TYPES.CallExpression ||
+					mapCallExpression.callee.type !== AST_NODE_TYPES.MemberExpression
+				) {
+					return;
+				}
 				const { sourceCode } = context;
 				const mapProperty = mapCallExpression.callee.property;
 
-				return {
+				context.report({
 					node: flatCallExpression,
 					loc: {
 						start: mapProperty.loc.start,
 						end: flatCallExpression.loc.end,
 					},
-					messageId: MESSAGE_ID,
+					messageId: "preferArrayFlatMap",
 					*fix(fixer) {
 						// Removes:
 						//   map(…).flat();
@@ -75,7 +86,7 @@ export default createRule<Options, MessageIds>({
 						//    ^^^
 						yield fixer.replaceText(mapProperty, "flatMap");
 					},
-				};
+				});
 			},
 		};
 	},

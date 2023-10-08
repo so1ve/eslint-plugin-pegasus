@@ -24,7 +24,7 @@ export function isMethodCall(
 		  }
 		| string
 		| string[],
-) {
+): node is TSESTree.CallExpression & { callee: TSESTree.MemberExpression } {
 	if (typeof options === "string") {
 		options = { methods: [options] };
 	}
