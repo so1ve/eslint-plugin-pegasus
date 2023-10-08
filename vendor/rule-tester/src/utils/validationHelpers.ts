@@ -118,14 +118,17 @@ export function wrapParser(parser: Linter.ParserModule): Linter.ParserModule {
 			enter: (node) => defineStartEndAsError("node", node),
 		});
 		if (ast.tokens) {
-			for (const token of ast.tokens) defineStartEndAsError("token", token);
+			for (const token of ast.tokens) {
+				defineStartEndAsError("token", token);
+			}
 		}
 		for (const token of ast.tokens) {
 			defineStartEndAsError("token", token);
 		}
 		if (ast.comments) {
-			for (const comment of ast.comments)
+			for (const comment of ast.comments) {
 				defineStartEndAsError("token", comment);
+			}
 		}
 		for (const comment of ast.comments) {
 			defineStartEndAsError("token", comment);
