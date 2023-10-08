@@ -85,8 +85,8 @@ export function applyFixes(
 	}
 
 	for (const problem of messages) {
-		if (hasOwnProperty(problem, "fix")) {
-			fixes.push(problem);
+		if (hasOwnProperty(problem as any, "fix")) {
+			fixes.push(problem as any);
 		} else {
 			remainingMessages.push(problem);
 		}

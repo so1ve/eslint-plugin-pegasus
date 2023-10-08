@@ -2,7 +2,6 @@
 
 import util from "node:util";
 
-// @ts-expect-error
 import { Legacy } from "@eslint/eslintrc";
 import type { AnyRuleModule, Linter } from "@typescript-eslint/utils/ts-eslint";
 import type {
@@ -177,7 +176,6 @@ function validateRules(
 			continue;
 		}
 
-		// @ts-expect-error
 		validateRuleOptions(rule, id, rulesConfig[id]!, source);
 	}
 }
