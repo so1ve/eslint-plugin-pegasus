@@ -13,12 +13,7 @@ const BOM = '\uFEFF'
  * Compares items in a messages array by range.
  * @returns -1 if a comes before b, 1 if a comes after b, 0 if equal.
  */
-function compareMessagesByFixRange(
-  a: LintMessageWithFix,
-  b: LintMessageWithFix,
-): number {
-  return a.fix.range[0] - b.fix.range[0] || a.fix.range[1] - b.fix.range[1]
-}
+const compareMessagesByFixRange = (a: LintMessageWithFix, b: LintMessageWithFix): number => (a.fix.range[0] - b.fix.range[0] || a.fix.range[1] - b.fix.range[1]);
 
 /**
  * Compares items in a messages array by line and column.
@@ -65,6 +60,7 @@ export function applyFixes(
     // Remain it as a problem if it's overlapped or it's a negative range
     if (lastPos >= start || start > end) {
       remainingMessages.push(problem)
+
       return false
     }
 
@@ -76,17 +72,18 @@ export function applyFixes(
     output += text.slice(Math.max(0, lastPos), Math.max(0, start))
     output += fix.text
     lastPos = end
+
     return true
   }
 
-  messages.forEach((problem) => {
+  for (const problem of messages) {
     if (hasOwnProperty(problem, 'fix'))
       fixes.push(problem)
     else
       remainingMessages.push(problem)
-  })
+  }
 
-  if (fixes.length) {
+  if (fixes.length > 0) {
     let fixesWereApplied = false
 
     for (const problem of fixes.sort(compareMessagesByFixRange)) {

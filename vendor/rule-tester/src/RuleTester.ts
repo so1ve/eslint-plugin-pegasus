@@ -16,7 +16,6 @@ import type {
   RuleModule,
 } from '@typescript-eslint/utils/ts-eslint'
 import { Linter } from '@typescript-eslint/utils/ts-eslint'
-
 // we intentionally import from eslint here because we need to use the same class
 // that ESLint uses, not our custom override typed version
 import { SourceCode } from 'eslint'
@@ -31,16 +30,15 @@ import type {
   TesterConfigWithDefaults,
   ValidTestCase,
 } from './types'
+import * as SourceCodeFixer from './utils/SourceCodeFixer'
 import { ajvBuilder } from './utils/ajv'
 import { cloneDeeplyExcludesParent } from './utils/cloneDeeplyExcludesParent'
-import { validate } from './utils/config-validator'
 import { satisfiesAllDependencyConstraints } from './utils/dependencyConstraints'
 import { freezeDeeply } from './utils/freezeDeeply'
 import { getRuleOptionsSchema } from './utils/getRuleOptionsSchema'
 import { hasOwnProperty } from './utils/hasOwnProperty'
 import { interpolate } from './utils/interpolate'
 import { isReadonlyArray } from './utils/isReadonlyArray'
-import * as SourceCodeFixer from './utils/SourceCodeFixer'
 import {
   ERROR_OBJECT_PARAMETERS,
   FRIENDLY_ERROR_OBJECT_PARAMETER_LIST,
@@ -202,6 +200,7 @@ export class RuleTester extends TestFramework {
           filename,
         )
       }
+
       return filename
     }
     const normalizeTest = <
@@ -222,6 +221,7 @@ export class RuleTester extends TestFramework {
           filename: getFilename(test.parserOptions),
         }
       }
+
       return test
     }
 
@@ -239,7 +239,7 @@ export class RuleTester extends TestFramework {
 
     // convenience iterator to make it easy to loop all tests without a concat
     const allTestsIterator = {
-      *[Symbol.iterator](): Generator<ValidTestCase<TOptions>, void, unknown> {
+      *[Symbol.iterator](): Generator<ValidTestCase<TOptions>, void> {
         for (const testCase of normalizedTests.valid)
           yield testCase
 
@@ -253,6 +253,7 @@ export class RuleTester extends TestFramework {
         if (test.only)
           return true
       }
+
       return false
     })()
     if (hasOnly) {
@@ -269,6 +270,7 @@ export class RuleTester extends TestFramework {
         )
           return true
       }
+
       return false
     })()
     if (!hasConstraints)
@@ -286,12 +288,10 @@ export class RuleTester extends TestFramework {
       | ValidTestCase<TOptions>,
     >(
         test: T,
-      ): T => {
-      return {
+      ): T => ({
         ...test,
         skip: !satisfiesAllDependencyConstraints(test.dependencyConstraints),
-      }
-    }
+      })
     normalizedTests.valid = normalizedTests.valid.map(maybeMarkAsOnly)
     normalizedTests.invalid = normalizedTests.invalid.map(maybeMarkAsOnly)
 
@@ -337,13 +337,13 @@ export class RuleTester extends TestFramework {
     }
 
     const scenarioErrors: string[] = []
-    REQUIRED_SCENARIOS.forEach((scenarioType) => {
+    for (const scenarioType of REQUIRED_SCENARIOS) {
       if (!test[scenarioType]) {
         scenarioErrors.push(
           `Could not find any ${scenarioType} test scenarios`,
         )
       }
-    })
+    }
 
     if (scenarioErrors.length > 0) {
       throw new Error(
@@ -392,9 +392,9 @@ export class RuleTester extends TestFramework {
      * one of the templates above.
      */
     constructor.describe(ruleName, () => {
-      if (normalizedTests.valid.length) {
+      if (normalizedTests.valid.length > 0) {
         constructor.describe('valid', () => {
-          normalizedTests.valid.forEach((valid) => {
+          for (const valid of normalizedTests.valid) {
             const testName = ((): string => {
               if (valid.name == null || valid.name.length === 0)
                 return valid.code
@@ -404,13 +404,13 @@ export class RuleTester extends TestFramework {
             constructor[getTestMethod(valid)](sanitize(testName), () => {
               this.#testValidTemplate(ruleName, rule, valid)
             })
-          })
+          }
         })
       }
 
-      if (normalizedTests.invalid.length) {
+      if (normalizedTests.invalid.length > 0) {
         constructor.describe('invalid', () => {
-          normalizedTests.invalid.forEach((invalid) => {
+          for (const invalid of normalizedTests.invalid) {
             const name = ((): string => {
               if (invalid.name == null || invalid.name.length === 0)
                 return invalid.code
@@ -420,7 +420,7 @@ export class RuleTester extends TestFramework {
             constructor[getTestMethod(invalid)](sanitize(name), () => {
               this.#testInvalidTemplate(ruleName, rule, invalid)
             })
-          })
+          }
         })
       }
     })
@@ -504,7 +504,7 @@ export class RuleTester extends TestFramework {
           Program(node): void {
             beforeAST = cloneDeeplyExcludesParent(node)
           },
-          'Program:exit': function (node): void {
+          'Program:exit' (node): void {
             afterAST = node
           },
         }
@@ -755,12 +755,12 @@ export class RuleTester extends TestFramework {
            * column.
            */
 
-          Object.keys(error).forEach((propertyName) => {
+          for (const propertyName of Object.keys(error)) {
             assert.ok(
               ERROR_OBJECT_PARAMETERS.has(propertyName),
               `Invalid error property name '${propertyName}'. Expected one of ${FRIENDLY_ERROR_OBJECT_PARAMETER_LIST}.`,
             )
-          })
+          }
 
           if (hasOwnProperty(error, 'message')) {
             assert.ok(
@@ -891,18 +891,18 @@ export class RuleTester extends TestFramework {
                 `Error should have ${error.suggestions.length} suggestions. Instead found ${messageSuggestions.length} suggestions`,
               )
 
-              error.suggestions.forEach((expectedSuggestion, index) => {
+              for (const [index, expectedSuggestion] of error.suggestions.entries()) {
                 assert.ok(
                   typeof expectedSuggestion === 'object'
                     && expectedSuggestion != null,
                   'Test suggestion in \'suggestions\' array must be an object.',
                 )
-                Object.keys(expectedSuggestion).forEach((propertyName) => {
+                for (const propertyName of Object.keys(expectedSuggestion)) {
                   assert.ok(
                     SUGGESTION_OBJECT_PARAMETERS.has(propertyName),
                     `Invalid suggestion property name '${propertyName}'. Expected one of ${FRIENDLY_SUGGESTION_OBJECT_PARAMETER_LIST}.`,
                   )
-                })
+                }
 
                 const actualSuggestion = messageSuggestions[index]
                 const suggestionPrefix = `Error Suggestion at index ${index} :`
@@ -973,7 +973,7 @@ export class RuleTester extends TestFramework {
                     `Expected the applied suggestion fix to match the test suggestion output for suggestion at index: ${index} on error with message: "${message.message}"`,
                   )
                 }
-              })
+              }
             }
           }
         }

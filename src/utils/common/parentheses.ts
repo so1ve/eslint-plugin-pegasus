@@ -41,7 +41,7 @@ export function getParenthesizedRange(
 ) {
 	const parentheses = getParentheses(node, sourceCode);
 	const [start] = (parentheses[0] || node).range;
-	const [, end] = (parentheses.at(-1) || node).range;
+	const [, end] = (parentheses.at(-1) ?? node).range;
 
 	return [start, end];
 }

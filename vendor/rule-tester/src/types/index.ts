@@ -27,10 +27,10 @@ export interface NormalizedRunTests<
   readonly invalid: readonly InvalidTestCase<TMessageIds, TOptions>[]
 }
 
-export type { ValidTestCase } from './ValidTestCase'
 export type {
   InvalidTestCase,
   SuggestionOutput,
   TestCaseError,
 } from './InvalidTestCase'
 export type { RuleTesterConfig } from './RuleTesterConfig'
+export type { ValidTestCase } from './ValidTestCase'

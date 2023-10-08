@@ -1,6 +1,6 @@
 // typed so that TS can remove optionality
 export const hasOwnProperty = Function.call.bind(Object.hasOwnProperty) as <
-  TObj extends object,
+  TObj extends Record<PropertyKey, unknown>,
   TK extends keyof TObj,
 >(
   obj: TObj,

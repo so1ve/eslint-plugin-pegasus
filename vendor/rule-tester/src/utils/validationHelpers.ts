@@ -113,8 +113,8 @@ export function wrapParser(parser: Linter.ParserModule): Linter.ParserModule {
       visitorKeys,
       enter: node => defineStartEndAsError('node', node),
     })
-    ast.tokens?.forEach(token => defineStartEndAsError('token', token))
-    ast.comments?.forEach(comment => defineStartEndAsError('token', comment))
+    if (ast.tokens) for (const token of ast.tokens) defineStartEndAsError('token', token)
+    if (ast.comments) for (const comment of ast.comments) defineStartEndAsError('token', comment)
   }
 
   if ('parseForESLint' in parser) {
@@ -125,6 +125,7 @@ export function wrapParser(parser: Linter.ParserModule): Linter.ParserModule {
         const ret = parser.parseForESLint(...args)
 
         defineStartEndAsErrorInTree(ret.ast, ret.visitorKeys)
+
         return ret
       },
     }
@@ -137,6 +138,7 @@ export function wrapParser(parser: Linter.ParserModule): Linter.ParserModule {
       const ast = parser.parse(...args)
 
       defineStartEndAsErrorInTree(ast)
+
       return ast
     },
   }

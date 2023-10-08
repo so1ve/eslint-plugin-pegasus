@@ -15,7 +15,7 @@ export function getRuleOptionsSchema(rule: AnyRuleModule): JSONSchema4 | null {
 
   // Given a tuple of schemas, insert warning level at the beginning
   if (isReadonlyArray(schema)) {
-    if (schema.length) {
+    if (schema.length > 0) {
       return {
         type: 'array',
         items: schema as JSONSchema4[],
@@ -23,6 +23,7 @@ export function getRuleOptionsSchema(rule: AnyRuleModule): JSONSchema4 | null {
         maxItems: schema.length,
       }
     }
+
     return {
       type: 'array',
       minItems: 0,

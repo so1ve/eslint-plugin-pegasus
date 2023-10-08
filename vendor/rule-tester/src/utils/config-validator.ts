@@ -115,10 +115,8 @@ function validateRuleOptions(
       (err as Error).message
     }`
 
-    if (typeof source === 'string')
-      throw new Error(`${source}:\n\t${enhancedMessage}`)
-    else
-      throw new Error(enhancedMessage)
+    const error = typeof source === 'string' ? new Error(`${source}:\n\t${enhancedMessage}`) : new Error(enhancedMessage);
+    throw error;
   }
 }
 
@@ -135,7 +133,7 @@ function validateEnvironment(
   if (!environment)
     return
 
-  Object.keys(environment).forEach((id) => {
+  for (const id of Object.keys(environment)) {
     const env = BuiltInEnvironments.get(id) ?? null
 
     if (!env) {
@@ -143,7 +141,7 @@ function validateEnvironment(
 
       throw new Error(message)
     }
-  })
+  }
 }
 
 /**
@@ -160,14 +158,14 @@ function validateRules(
   if (!rulesConfig)
     return
 
-  Object.keys(rulesConfig).forEach((id) => {
+  for (const id of Object.keys(rulesConfig)) {
     const rule = getAdditionalRule(id) ?? builtinRules.get(id) ?? null
     if (rule == null)
-      return
+      continue
 
     // @ts-expect-error
     validateRuleOptions(rule, id, rulesConfig[id]!, source)
-  })
+  }
 }
 
 /**
@@ -182,8 +180,7 @@ function validateGlobals(
   if (!globalsConfig)
     return
 
-  Object.entries(globalsConfig).forEach(
-    ([configuredGlobal, configuredValue]) => {
+  for (const [configuredGlobal, configuredValue] of Object.entries(globalsConfig)) {
       try {
         ConfigOps.normalizeConfigGlobal(configuredValue)
       }
@@ -194,19 +191,18 @@ function validateGlobals(
           }`,
         )
       }
-    },
-  )
+    }
+  
 }
 
 /**
  * Formats an array of schema validation errors.
  */
-function formatErrors(errors: AjvErrorObject[]): string {
-  return errors
+const formatErrors = (errors: AjvErrorObject[]): string => (errors
     .map((error) => {
       if (error.keyword === 'additionalProperties') {
         const params = error.params as AdditionalPropertiesParams
-        const formattedPropertyPath = error.dataPath.length
+        const formattedPropertyPath = error.dataPath.length > 0
           ? `${error.dataPath.slice(1)}.${params.additionalProperty}`
           : params.additionalProperty
 
@@ -231,8 +227,7 @@ function formatErrors(errors: AjvErrorObject[]): string {
       )}`
     })
     .map(message => `\t- ${message}.\n`)
-    .join('')
-}
+    .join(''));
 
 /**
  * Validates the top level properties of the config object.

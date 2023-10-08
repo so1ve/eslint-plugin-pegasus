@@ -1,9 +1,8 @@
-import type { InvalidTestCase } from "@typescript-eslint/utils/ts-eslint";
-import { RuleTester } from "../../vendor/rule-tester/src/RuleTester";
-import { expect, it } from "vitest";
 import dedent from "dedent";
-import type { MessageIds } from "./prefer-array-flat-map";
-import rule, { RULE_NAME } from "./prefer-array-flat-map";
+import { expect } from "vitest";
+
+import rule, { RULE_NAME } from "../src/rules/prefer-array-flat-map";
+import { getRuleTester } from "../src/utils/testing";
 
 const valid = [
 	"const bar = [1,2,3].map()",
@@ -85,9 +84,7 @@ const invalid = [
 	`,
 ];
 
-const ruleTester: RuleTester = new RuleTester({
-	parser: require.resolve("@typescript-eslint/parser"),
-});
+const ruleTester = getRuleTester();
 
 ruleTester.run(RULE_NAME, rule, {
 	valid,
