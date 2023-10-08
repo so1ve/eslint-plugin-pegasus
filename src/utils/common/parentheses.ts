@@ -38,7 +38,7 @@ export function getParentheses(
 export function getParenthesizedRange(
 	node: TSESTree.Node,
 	sourceCode: TSESLint.SourceCode,
-) {
+): [number, number] {
 	const parentheses = getParentheses(node, sourceCode);
 	const [start] = (parentheses[0] || node).range;
 	const [, end] = (parentheses.at(-1) ?? node).range;

@@ -1,48 +1,35 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`prefer-array-flat-map > invalid > const bar = (([1,2,3].map(i => [i]))).flat() 1`] = `"const bar = (([1,2,3].flatMap(i => [i])))"`;
+exports[`prefer-array-flat-map > prefer-array-flat-map > invalid > const bar = (([1,2,3].map(i => [i]))).flat() 1`] = `"const bar = (([1,2,3].flatMap(i => [i])))"`;
 
-exports[`prefer-array-flat-map > invalid > const bar = [[1],[2],[3]].map(i => [i]).flat() 1`] = `"const bar = [[1],[2],[3]].flatMap(i => [i])"`;
+exports[`prefer-array-flat-map > prefer-array-flat-map > invalid > const bar = [[1],[2],[3]].map(i => [i]).flat() 1`] = `"const bar = [[1],[2],[3]].flatMap(i => [i])"`;
 
-exports[`prefer-array-flat-map > invalid > const bar = [[1],[2],[3]].map(i => [i]).flat(1,) 1`] = `"const bar = [[1],[2],[3]].flatMap(i => [i])"`;
+exports[`prefer-array-flat-map > prefer-array-flat-map > invalid > const bar = [[1],[2],[3]].map(i => [i]).flat(1,) 1`] = `"const bar = [[1],[2],[3]].flatMap(i => [i])"`;
 
-exports[`prefer-array-flat-map > invalid > const bar = [1,2,3].map((i) => [i]).flat() 1`] = `"const bar = [1,2,3].flatMap((i) => [i])"`;
+exports[`prefer-array-flat-map > prefer-array-flat-map > invalid > const bar = [1,2,3].map((i) => [i]).flat() 1`] = `"const bar = [1,2,3].flatMap((i) => [i])"`;
 
-exports[`prefer-array-flat-map > invalid > const bar = [1,2,3].map((i) => { return [i]; }).flat() 1`] = `"const bar = [1,2,3].flatMap((i) => { return [i]; })"`;
+exports[`prefer-array-flat-map > prefer-array-flat-map > invalid > const bar = [1,2,3].map((i) => { return [i]; }).flat() 1`] = `"const bar = [1,2,3].flatMap((i) => { return [i]; })"`;
 
-exports[`prefer-array-flat-map > invalid > const bar = [1,2,3].map(foo).flat() 1`] = `"const bar = [1,2,3].flatMap(foo)"`;
+exports[`prefer-array-flat-map > prefer-array-flat-map > invalid > const bar = [1,2,3].map(foo).flat() 1`] = `"const bar = [1,2,3].flatMap(foo)"`;
 
-exports[`prefer-array-flat-map > invalid > const bar = [1,2,3].map(i => [i]).flat() 1`] = `"const bar = [1,2,3].flatMap(i => [i])"`;
+exports[`prefer-array-flat-map > prefer-array-flat-map > invalid > const bar = [1,2,3].map(i => [i]).flat() 1`] = `"const bar = [1,2,3].flatMap(i => [i])"`;
 
-exports[`prefer-array-flat-map > invalid > const bar = [1,2,3].map(i => [i]).flat(1); 1`] = `"const bar = [1,2,3].flatMap(i => [i]);"`;
+exports[`prefer-array-flat-map > prefer-array-flat-map > invalid > const bar = [1,2,3].map(i => [i]).flat(1); 1`] = `"const bar = [1,2,3].flatMap(i => [i]);"`;
 
-exports[`prefer-array-flat-map > invalid > const bar = [1,2,3].map(i => i).map(i => [i]).flat() 1`] = `"const bar = [1,2,3].map(i => i).flatMap(i => [i])"`;
+exports[`prefer-array-flat-map > prefer-array-flat-map > invalid > const bar = [1,2,3].map(i => i).map(i => [i]).flat() 1`] = `"const bar = [1,2,3].map(i => i).flatMap(i => [i])"`;
 
-exports[`prefer-array-flat-map > invalid > const bar = [1,2,3].sort().map(i => [i]).flat() 1`] = `"const bar = [1,2,3].sort().flatMap(i => [i])"`;
+exports[`prefer-array-flat-map > prefer-array-flat-map > invalid > const bar = [1,2,3].sort().map(i => [i]).flat() 1`] = `"const bar = [1,2,3].sort().flatMap(i => [i])"`;
 
-exports[`prefer-array-flat-map > invalid > const bar = { map: () => {} }.map(i => [i]).flat() 1`] = `"const bar = { map: () => {} }.flatMap(i => [i])"`;
-
-exports[`prefer-array-flat-map > invalid > const bar = foo.map(i => [i]).flat() 1`] = `"const bar = foo.flatMap(i => [i])"`;
-
-exports[`prefer-array-flat-map > invalid > const foo = bars
-\\u0009.filter(foo => !!foo.zaz)
-\\u0009.map(foo => doFoo(foo))
-\\u0009.flat(); 1`] = `
-"const foo = bars
-	.filter(foo => !!foo.zaz)
-	.flatMap(foo => doFoo(foo));"
-`;
-
-exports[`prefer-array-flat-map > invalid > let bar = [1,2,3]
+exports[`prefer-array-flat-map > prefer-array-flat-map > invalid > let bar = [1,2,3]
 \\u0009.map(i => { return [i]; })
 \\u0009.flat(); 1`] = `
 "let bar = [1,2,3]
 	.flatMap(i => { return [i]; });"
 `;
 
-exports[`prefer-array-flat-map > invalid > let bar = [1,2,3] . map( x => y ) . flat () // 🤪 1`] = `"let bar = [1,2,3] . flatMap( x => y ) // 🤪"`;
+exports[`prefer-array-flat-map > prefer-array-flat-map > invalid > let bar = [1,2,3] . map( x => y ) . flat () // 🤪 1`] = `"let bar = [1,2,3] . flatMap( x => y ) // 🤪"`;
 
-exports[`prefer-array-flat-map > invalid > let bar = [1,2,3].map(i => {
+exports[`prefer-array-flat-map > prefer-array-flat-map > invalid > let bar = [1,2,3].map(i => {
 \\u0009return [i];
 })
 .flat(); 1`] = `
@@ -51,7 +38,7 @@ exports[`prefer-array-flat-map > invalid > let bar = [1,2,3].map(i => {
 });"
 `;
 
-exports[`prefer-array-flat-map > invalid > let bar = [1,2,3].map(i => {
+exports[`prefer-array-flat-map > prefer-array-flat-map > invalid > let bar = [1,2,3].map(i => {
 \\u0009return [i];
 }) // comment
 .flat(); // other 1`] = `
@@ -60,7 +47,7 @@ exports[`prefer-array-flat-map > invalid > let bar = [1,2,3].map(i => {
 }); // other"
 `;
 
-exports[`prefer-array-flat-map > invalid > let bar = [1,2,3].map(i => {
+exports[`prefer-array-flat-map > prefer-array-flat-map > invalid > let bar = [1,2,3].map(i => {
 \\u0009return [i];
 }) // comment
 .flat(); 1`] = `
@@ -69,7 +56,7 @@ exports[`prefer-array-flat-map > invalid > let bar = [1,2,3].map(i => {
 });"
 `;
 
-exports[`prefer-array-flat-map > invalid > let bar = [1,2,3].map(i => {
+exports[`prefer-array-flat-map > prefer-array-flat-map > invalid > let bar = [1,2,3].map(i => {
 \\u0009return [i];
 }).flat(); 1`] = `
 "let bar = [1,2,3].flatMap(i => {
@@ -77,5 +64,5 @@ exports[`prefer-array-flat-map > invalid > let bar = [1,2,3].map(i => {
 });"
 `;
 
-exports[`prefer-array-flat-map > invalid > let bar = [1,2,3].map(i => { return [i]; })
+exports[`prefer-array-flat-map > prefer-array-flat-map > invalid > let bar = [1,2,3].map(i => { return [i]; })
 \\u0009.flat(); 1`] = `"let bar = [1,2,3].flatMap(i => { return [i]; });"`;
