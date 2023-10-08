@@ -114,7 +114,10 @@ export const isCallExpression = (
 	options: CallOrNewExpressionCheckOptions = {},
 ) => create(node, options, ["CallExpression"]);
 
-export function isNewExpression(node: TSESTree.Node, options: CallOrNewExpressionCheckOptions = {}) {
+export function isNewExpression(
+	node: TSESTree.Node,
+	options: CallOrNewExpressionCheckOptions = {},
+) {
 	if (
 		typeof options === "object" &&
 		!Array.isArray(options) &&

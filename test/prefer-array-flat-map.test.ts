@@ -28,6 +28,7 @@ const valid = [
 	"const bar = [[1],[2],[3]].map(i => [i]).flat(foo)",
 	"const bar = [[1],[2],[3]].map(i => [i]).flat(foo.bar)",
 	"const bar = [[1],[2],[3]].map(i => [i]).flat(1.00)",
+	"const bar = { map: () => {} }.map(i => [i]).flat()", // not an array
 ];
 
 const invalid = [
@@ -37,8 +38,6 @@ const invalid = [
 	"const bar = [1,2,3].map((i) => [i]).flat()",
 	"const bar = [1,2,3].map((i) => { return [i]; }).flat()",
 	"const bar = [1,2,3].map(foo).flat()",
-	"const bar = foo.map(i => [i]).flat()",
-	"const bar = { map: () => {} }.map(i => [i]).flat()",
 	"const bar = [1,2,3].map(i => i).map(i => [i]).flat()",
 	"const bar = [1,2,3].sort().map(i => [i]).flat()",
 	"const bar = (([1,2,3].map(i => [i]))).flat()",
@@ -76,12 +75,6 @@ const invalid = [
 	`,
 	"let bar = [1,2,3] . map( x => y ) . flat () // 🤪",
 	"const bar = [1,2,3].map(i => [i]).flat(1);",
-	dedent`
-		const foo = bars
-			.filter(foo => !!foo.zaz)
-			.map(foo => doFoo(foo))
-			.flat();
-	`,
 ];
 
 const ruleTester = getRuleTester();

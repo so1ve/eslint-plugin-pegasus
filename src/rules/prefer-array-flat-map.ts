@@ -1,5 +1,5 @@
+import typeutils from "@typescript-eslint/type-utils";
 import { AST_NODE_TYPES, ESLintUtils } from "@typescript-eslint/utils";
-import * as tsutils from "ts-api-utils";
 
 import { createRule } from "../utils";
 import { isMethodCall } from "../utils/ast";
@@ -25,6 +25,7 @@ export default createRule<Options, MessageIds>({
 	defaultOptions: [],
 	create: (context) => {
 		const services = ESLintUtils.getParserServices(context);
+		const checker = services.program.getTypeChecker();
 
 		return {
 			CallExpression(node) {
@@ -66,9 +67,14 @@ export default createRule<Options, MessageIds>({
 				const { property: mapProperty, object: mapObject } =
 					mapCallExpression.callee;
 
-				const mapObjectType = services.getTypeAtLocation(mapObject);
-				mapObjectType.objectFlags;
-				if (!tsutils.isTypeFlagSet(mapObjectType)) {
+				const mapObjectType = typeutils.getConstrainedTypeAtLocation(
+					services,
+					mapObject,
+				);
+
+				if (
+					!typeutils.isTypeArrayTypeOrUnionOfArrayTypes(mapObjectType, checker)
+				) {
 					return;
 				}
 
