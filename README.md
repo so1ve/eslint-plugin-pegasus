@@ -2,6 +2,8 @@
 
 [![NPM version](https://img.shields.io/npm/v/eslint-plugin-pegasus?color=a1b858&label=)](https://www.npmjs.com/package/eslint-plugin-pegasus)
 
+> TypeScript-friendly rewrite of [eslint-plugin-unicorn](https://github.com/sindresorhus/eslint-plugin-unicorn), uses type-aware linting to reduce false positives.
+
 ## 💎 Features
 
 ## 📦 Installation

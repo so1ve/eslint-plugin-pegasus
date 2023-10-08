@@ -39,7 +39,7 @@
 	},
 	"scripts": {
 		"build": "unbuild",
-		"build:eslint-docs": "nr stub && eslint-doc-generator",
+		"build:eslint-docs": "nr stub && eslint-doc-generator && prettier README.md docs/rules/*.md --write",
 		"lint": "eslint . && prettier . --check",
 		"lint:fix": "eslint . --fix && prettier . --write",
 		"prepublishOnly": "nr build",
