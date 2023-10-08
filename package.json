@@ -1,17 +1,17 @@
 {
-	"name": "pkg-name",
+	"name": "eslint-plugin-pegasus",
 	"version": "0.0.0",
 	"packageManager": "pnpm@8.8.0",
 	"author": "Ray <i@mk1.io> (@so1ve)",
 	"description": "",
 	"keywords": [],
-	"homepage": "https://github.com/so1ve/pkg-name#readme",
+	"homepage": "https://github.com/so1ve/eslint-plugin-pegasus#readme",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/so1ve/pkg-name.git"
+		"url": "git+https://github.com/so1ve/eslint-plugin-pegasus.git"
 	},
 	"bugs": {
-		"url": "https://github.com/so1ve/pkg-name/issues"
+		"url": "https://github.com/so1ve/eslint-plugin-pegasus/issues"
 	},
 	"license": "MIT",
 	"sideEffects": false,
@@ -39,6 +39,7 @@
 	},
 	"scripts": {
 		"build": "unbuild",
+		"build:eslint-docs": "nr stub && eslint-doc-generator",
 		"lint": "eslint . && prettier . --check",
 		"lint:fix": "eslint . --fix && prettier . --write",
 		"prepublishOnly": "nr build",
@@ -66,8 +67,8 @@
 		"bumpp": "^9.2.0",
 		"dedent": "^1.5.1",
 		"eslint": "^8.51.0",
+		"eslint-doc-generator": "^1.4.3",
 		"lodash.merge": "4.6.2",
-		"pkgroll": "^2.0.1",
 		"prettier": "^3.0.3",
 		"semver": "^7.5.4",
 		"tsx": "^3.13.0",

@@ -1,22 +1,29 @@
-# pkg-name
+# eslint-plugin-pegasus
 
-[![NPM version](https://img.shields.io/npm/v/pkg-name?color=a1b858&label=)](https://www.npmjs.com/package/pkg-name)
+[![NPM version](https://img.shields.io/npm/v/eslint-plugin-pegasus?color=a1b858&label=)](https://www.npmjs.com/package/eslint-plugin-pegasus)
 
 ## 💎 Features
 
 ## 📦 Installation
 
 ```bash
-$ npm install pkg-name
-$ yarn add pkg-name
-$ pnpm add pkg-name
+$ npm install -D eslint-plugin-pegasus
+$ yarn add -D eslint-plugin-pegasus
+$ pnpm add -D eslint-plugin-pegasus
 ```
 
-## 🚀 Usage
+## 📚 Available Rules
 
-```ts
+<!-- begin auto-generated rules list -->
 
-```
+🔧 Automatically fixable by the [`--fix` CLI option](https://eslint.org/docs/user-guide/command-line-interface#--fix).\
+💭 Requires type information.
+
+| Name                                                           | Description                                 | 🔧 | 💭 |
+| :------------------------------------------------------------- | :------------------------------------------ | :- | :- |
+| [prefer-top-level-await](docs/rules/prefer-top-level-await.md) | Prefer `.flatMap(…)` over `.map(…).flat()`. | 🔧 | 💭 |
+
+<!-- end auto-generated rules list -->
 
 ## 📝 License
 

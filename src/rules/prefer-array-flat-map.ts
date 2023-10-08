@@ -15,6 +15,7 @@ export default createRule<Options, MessageIds>({
 		type: "suggestion",
 		docs: {
 			description: "Prefer `.flatMap(…)` over `.map(…).flat()`.",
+			requiresTypeChecking: true,
 		},
 		fixable: "code",
 		schema: [],
