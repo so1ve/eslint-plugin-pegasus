@@ -1,4 +1,4 @@
-# Prefer `.flatMap(…)` over `.map(…).flat()` (`pegasus/prefer-top-level-await`)
+# Prefer `.flatMap(…)` over `.map(…).flat()` (`pegasus/prefer-array-flat-map`)
 
 🔧 This rule is automatically fixable by the [`--fix` CLI option](https://eslint.org/docs/latest/user-guide/command-line-interface#--fix).
 

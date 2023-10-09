@@ -1,9 +1,9 @@
 import type { TSESLint } from "@typescript-eslint/utils";
 
-import preferTopLevelAwait from "./rules/prefer-array-flat-map";
+import preferArrayFlatMap from "./rules/prefer-array-flat-map";
 
 export default {
 	rules: {
-		"prefer-top-level-await": preferTopLevelAwait,
+		"prefer-array-flat-map": preferArrayFlatMap,
 	} satisfies Record<string, TSESLint.RuleModule<string, unknown[]>>, // Fixes "The inferred type of 'default' cannot be named without a reference to..."
 };
