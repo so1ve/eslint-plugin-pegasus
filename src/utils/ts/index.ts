@@ -31,4 +31,10 @@ export class TypeHelper {
 
 		return tsutils.isTypeFlagSet(nodeType, ts.TypeFlags.Number);
 	}
+
+	isAny(node: TSESTree.Node) {
+		const nodeType = this.getType(node);
+
+		return typeutils.isTypeAnyType(nodeType);
+	}
 }

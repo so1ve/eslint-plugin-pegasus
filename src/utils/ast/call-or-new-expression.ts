@@ -1,4 +1,4 @@
-import type { TSESTree } from "@typescript-eslint/types";
+import { TSESTree } from "@typescript-eslint/types";
 
 type CallOrNewExpressionCheckOptions =
 	| {
@@ -16,7 +16,7 @@ type CallOrNewExpressionCheckOptions =
 function create(
 	node: TSESTree.Node,
 	options: CallOrNewExpressionCheckOptions,
-	types: string[],
+	types: TSESTree.AST_NODE_TYPES[],
 ) {
 	if (!types.includes(node?.type)) {
 		return false;
@@ -90,7 +90,8 @@ function create(
 			"arguments" in node &&
 			node.arguments.some(
 				(node, index) =>
-					node.type === "SpreadElement" && index < maximumArgumentsLength,
+					node.type === TSESTree.AST_NODE_TYPES.SpreadElement &&
+					index < maximumArgumentsLength,
 			)
 		) {
 			return false;
@@ -101,7 +102,8 @@ function create(
 		Array.isArray(names) &&
 		names.length > 0 &&
 		"callee" in node &&
-		(node.callee.type !== "Identifier" || !names.includes(node.callee.name))
+		(node.callee.type !== TSESTree.AST_NODE_TYPES.Identifier ||
+			!names.includes(node.callee.name))
 	) {
 		return false;
 	}
@@ -112,7 +114,7 @@ function create(
 export const isCallExpression = (
 	node: TSESTree.Node,
 	options: CallOrNewExpressionCheckOptions = {},
-) => create(node, options, ["CallExpression"]);
+) => create(node, options, [TSESTree.AST_NODE_TYPES.CallExpression]);
 
 export function isNewExpression(
 	node: TSESTree.Node,
@@ -126,10 +128,14 @@ export function isNewExpression(
 		throw new TypeError("Cannot check node.optional in `isNewExpression`.");
 	}
 
-	return create(node, options, ["NewExpression"]);
+	return create(node, options, [TSESTree.AST_NODE_TYPES.NewExpression]);
 }
 
 export const isCallOrNewExpression = (
 	node: TSESTree.Node,
 	options: CallOrNewExpressionCheckOptions = {},
-) => create(node, options, ["CallExpression", "NewExpression"]);
+) =>
+	create(node, options, [
+		TSESTree.AST_NODE_TYPES.CallExpression,
+		TSESTree.AST_NODE_TYPES.NewExpression,
+	]);

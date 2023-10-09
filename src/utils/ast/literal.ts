@@ -1,10 +1,10 @@
-import type { TSESTree } from "@typescript-eslint/types";
+import { TSESTree } from "@typescript-eslint/types";
 
 export function isLiteral<T>(
 	node: TSESTree.Node,
 	value: T,
 ): node is TSESTree.Literal & { value: T } {
-	if (node?.type !== "Literal") {
+	if (node?.type !== TSESTree.AST_NODE_TYPES.Literal) {
 		return false;
 	}
 
@@ -18,19 +18,25 @@ export function isLiteral<T>(
 export const isStringLiteral = (
 	node: TSESTree.Node,
 ): node is TSESTree.StringLiteral =>
-	node?.type === "Literal" && typeof node.value === "string";
+	node?.type === TSESTree.AST_NODE_TYPES.Literal &&
+	typeof node.value === "string";
 export const isNumberLiteral = (
 	node: TSESTree.Node,
 ): node is TSESTree.NumberLiteral =>
-	node.type === "Literal" && typeof node.value === "number";
+	node.type === TSESTree.AST_NODE_TYPES.Literal &&
+	typeof node.value === "number";
 export const isRegexLiteral = (
 	node: TSESTree.Node,
 ): node is TSESTree.RegExpLiteral =>
-	node.type === "Literal" && "regex" in node && Boolean(node.regex);
+	node.type === TSESTree.AST_NODE_TYPES.Literal &&
+	"regex" in node &&
+	Boolean(node.regex);
 export const isNullLiteral = (
 	node: TSESTree.Node,
 ): node is TSESTree.NullLiteral => isLiteral(node, null);
 export const isBigIntLiteral = (
 	node: TSESTree.Node,
 ): node is TSESTree.BigIntLiteral =>
-	node.type === "Literal" && "bigint" in node && Boolean(node.bigint);
+	node.type === TSESTree.AST_NODE_TYPES.Literal &&
+	"bigint" in node &&
+	Boolean(node.bigint);

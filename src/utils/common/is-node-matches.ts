@@ -1,4 +1,4 @@
-import type { TSESTree } from "@typescript-eslint/utils";
+import { TSESTree } from "@typescript-eslint/utils";
 
 export function isNodeMatchesNameOrPath(
 	node: TSESTree.Node,
@@ -13,16 +13,18 @@ export function isNodeMatchesNameOrPath(
 
 		if (index === 0) {
 			return (
-				(node.type === "Identifier" && node.name === name) ||
-				(name === "this" && node.type === "ThisExpression")
+				(node.type === TSESTree.AST_NODE_TYPES.Identifier &&
+					node.name === name) ||
+				(name === "this" &&
+					node.type === TSESTree.AST_NODE_TYPES.ThisExpression)
 			);
 		}
 
 		if (
-			node.type !== "MemberExpression" ||
+			node.type !== TSESTree.AST_NODE_TYPES.MemberExpression ||
 			node.optional ||
 			node.computed ||
-			node.property.type !== "Identifier" ||
+			node.property.type !== TSESTree.AST_NODE_TYPES.Identifier ||
 			node.property.name !== name
 		) {
 			return false;

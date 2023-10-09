@@ -1,5 +1,5 @@
 import { getStaticValue } from "@eslint-community/eslint-utils";
-import type { TSESTree } from "@typescript-eslint/types";
+import { TSESTree } from "@typescript-eslint/types";
 import type { TSESLint } from "@typescript-eslint/utils";
 
 import { isNumberLiteral } from "../ast";
@@ -9,17 +9,17 @@ export const isStaticProperties = (
 	object: string,
 	properties: Set<string>,
 ) =>
-	node.type === "MemberExpression" &&
+	node.type === TSESTree.AST_NODE_TYPES.MemberExpression &&
 	!node.computed &&
 	!node.optional &&
-	node.object.type === "Identifier" &&
+	node.object.type === TSESTree.AST_NODE_TYPES.Identifier &&
 	node.object.name === object &&
-	node.property.type === "Identifier" &&
+	node.property.type === TSESTree.AST_NODE_TYPES.Identifier &&
 	properties.has(node.property.name);
 export const isFunctionCall = (node: TSESTree.Node, functionName: string) =>
-	node.type === "CallExpression" &&
+	node.type === TSESTree.AST_NODE_TYPES.CallExpression &&
 	!node.optional &&
-	node.callee.type === "Identifier" &&
+	node.callee.type === TSESTree.AST_NODE_TYPES.Identifier &&
 	node.callee.name === functionName;
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math#static_properties
@@ -78,7 +78,7 @@ const mathMethods = new Set([
 ]);
 // `Math.{abs, …, trunc}(…)`
 export const isMathMethodCall = (node: TSESTree.Node) =>
-	node.type === "CallExpression" &&
+	node.type === TSESTree.AST_NODE_TYPES.CallExpression &&
 	!node.optional &&
 	isStaticProperties(node.callee, "Math", mathMethods);
 
@@ -103,7 +103,7 @@ export const isNumberProperty = (node: TSESTree.Node) =>
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number#static_methods
 const numberMethods = new Set(["parseFloat", "parseInt"]);
 export const isNumberMethodCall = (node: TSESTree.Node) =>
-	node.type === "CallExpression" &&
+	node.type === TSESTree.AST_NODE_TYPES.CallExpression &&
 	!node.optional &&
 	isStaticProperties(node.callee, "Number", numberMethods);
 export const isGlobalParseToNumberFunctionCall = (node: TSESTree.Node) =>
@@ -115,10 +115,10 @@ export const isStaticNumber = (
 ) => typeof getStaticValue(node, scope)?.value === "number";
 
 export const isLengthProperty = (node: TSESTree.Node) =>
-	node.type === "MemberExpression" &&
+	node.type === TSESTree.AST_NODE_TYPES.MemberExpression &&
 	!node.computed &&
 	!node.optional &&
-	node.property.type === "Identifier" &&
+	node.property.type === TSESTree.AST_NODE_TYPES.Identifier &&
 	node.property.name === "length";
 
 // `+` and `>>>` operators are handled separately
@@ -149,7 +149,7 @@ export function isNumber(node: TSESTree.Node, scope: TSESLint.Scope.Scope) {
 	}
 
 	switch (node.type) {
-		case "AssignmentExpression": {
+		case TSESTree.AST_NODE_TYPES.AssignmentExpression: {
 			const { operator } = node;
 			if (operator === "=" && isNumber(node.right, scope)) {
 				return true;
@@ -158,10 +158,10 @@ export function isNumber(node: TSESTree.Node, scope: TSESLint.Scope.Scope) {
 			// Fall through
 		}
 
-		case "BinaryExpression": {
+		case TSESTree.AST_NODE_TYPES.BinaryExpression: {
 			let { operator } = node;
 
-			if (node.type === "AssignmentExpression") {
+			if (node.type === TSESTree.AST_NODE_TYPES.AssignmentExpression) {
 				operator = operator.slice(0, -1) as any;
 			}
 
@@ -190,7 +190,7 @@ export function isNumber(node: TSESTree.Node, scope: TSESLint.Scope.Scope) {
 			break;
 		}
 
-		case "UnaryExpression": {
+		case TSESTree.AST_NODE_TYPES.UnaryExpression: {
 			const { operator } = node;
 
 			// `+` can't use on `BigInt`
@@ -209,7 +209,7 @@ export function isNumber(node: TSESTree.Node, scope: TSESLint.Scope.Scope) {
 			break;
 		}
 
-		case "UpdateExpression": {
+		case TSESTree.AST_NODE_TYPES.UpdateExpression: {
 			if (isNumber(node.argument, scope)) {
 				return true;
 			}
@@ -217,7 +217,7 @@ export function isNumber(node: TSESTree.Node, scope: TSESLint.Scope.Scope) {
 			break;
 		}
 
-		case "ConditionalExpression": {
+		case TSESTree.AST_NODE_TYPES.ConditionalExpression: {
 			const isConsequentNumber = isNumber(node.consequent, scope);
 			const isAlternateNumber = isNumber(node.alternate, scope);
 
@@ -237,7 +237,7 @@ export function isNumber(node: TSESTree.Node, scope: TSESLint.Scope.Scope) {
 			break;
 		}
 
-		case "SequenceExpression": {
+		case TSESTree.AST_NODE_TYPES.SequenceExpression: {
 			if (isNumber(node.expressions.at(-1)!, scope)) {
 				return true;
 			}

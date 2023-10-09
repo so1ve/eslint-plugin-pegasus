@@ -29,19 +29,19 @@ export default createRule<Options, MessageIds>({
 		const typeHelper = new TypeHelper(services);
 
 		return {
-			CallExpression(node) {
+			CallExpression(callExpression) {
 				if (
 					!(
-						isMethodCall(node, {
+						isMethodCall(callExpression, {
 							method: "flat",
 							optionalCall: false,
 							optionalMember: false,
 						}) &&
-						(node.arguments.length === 0 ||
-							(node.arguments.length === 1 &&
-								node.arguments[0].type === "Literal" &&
-								node.arguments[0].raw === "1")) &&
-						isMethodCall(node.callee.object, {
+						(callExpression.arguments.length === 0 ||
+							(callExpression.arguments.length === 1 &&
+								callExpression.arguments[0].type === "Literal" &&
+								callExpression.arguments[0].raw === "1")) &&
+						isMethodCall(callExpression.callee.object, {
 							method: "map",
 							optionalCall: false,
 							optionalMember: false,
@@ -51,7 +51,7 @@ export default createRule<Options, MessageIds>({
 					return;
 				}
 
-				const flatCallExpression = node;
+				const flatCallExpression = callExpression;
 				if (
 					flatCallExpression.callee.type !== AST_NODE_TYPES.MemberExpression
 				) {

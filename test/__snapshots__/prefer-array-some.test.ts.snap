@@ -1,0 +1,52 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`prefer-array-some > prefer-array-some > invalid > array.filter(fn).length !== 0 1`] = `"array.some(fn)"`;
+
+exports[`prefer-array-some > prefer-array-some > invalid > array.filter(fn).length > 0 1`] = `"array.some(fn)"`;
+
+exports[`prefer-array-some > prefer-array-some > invalid > const array = []; const foo = array.find(element => element === "🦄") ? bar : baz; 1`] = `"const array = []; const foo = array.find(element => element === \\"🦄\\") ? bar : baz;"`;
+
+exports[`prefer-array-some > prefer-array-some > invalid > const array = []; if (array.find(element => element === "🦄")) {} 1`] = `"const array = []; if (array.find(element => element === \\"🦄\\")) {}"`;
+
+exports[`prefer-array-some > prefer-array-some > invalid > const foo = []; a = (( ((foo.find(fn))) == ((null)) )) ? "no" : "yes"; 1`] = `"const foo = []; a = (( ((foo.find(fn))) == ((null)) )) ? \\"no\\" : \\"yes\\";"`;
+
+exports[`prefer-array-some > prefer-array-some > invalid > const foo = []; foo.find(fn) != null 1`] = `"const foo = []; foo.find(fn) != null"`;
+
+exports[`prefer-array-some > prefer-array-some > invalid > const foo = []; foo.find(fn) != undefined 1`] = `"const foo = []; foo.find(fn) != undefined"`;
+
+exports[`prefer-array-some > prefer-array-some > invalid > const foo = []; foo.find(fn) !== undefined 1`] = `"const foo = []; foo.find(fn) !== undefined"`;
+
+exports[`prefer-array-some > prefer-array-some > invalid > const foo = []; foo.find(fn) == null 1`] = `"const foo = []; foo.find(fn) == null"`;
+
+exports[`prefer-array-some > prefer-array-some > invalid > const foo = []; foo.find(fn) == undefined 1`] = `"const foo = []; foo.find(fn) == undefined"`;
+
+exports[`prefer-array-some > prefer-array-some > invalid > const foo = []; foo.find(fn) === undefined 1`] = `"const foo = []; foo.find(fn) === undefined"`;
+
+exports[`prefer-array-some > prefer-array-some > invalid > if (
+\\u0009((
+\\u0009\\u0009((
+\\u0009\\u0009\\u0009((
+\\u0009\\u0009\\u0009\\u0009((
+\\u0009\\u0009\\u0009\\u0009\\u0009array
+\\u0009\\u0009\\u0009\\u0009))
+\\u0009\\u0009\\u0009\\u0009\\u0009.filter(what_ever_here)
+\\u0009\\u0009\\u0009))
+\\u0009\\u0009\\u0009\\u0009.length
+\\u0009\\u0009))
+\\u0009\\u0009>
+\\u0009\\u0009(( 0 ))
+\\u0009))
+); 1`] = `
+"if (
+	((
+		((
+			((
+				((
+					array
+				))
+					.some(what_ever_here)
+			))
+		))
+	))
+);"
+`;

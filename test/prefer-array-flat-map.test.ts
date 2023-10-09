@@ -1,10 +1,10 @@
 import dedent from "dedent";
 
 import rule, { RULE_NAME } from "../src/rules/prefer-array-flat-map";
-import { testSnapshot } from "../src/utils/testing";
+import { testRuleSnapshot } from "../src/utils/testing";
 
 describe("prefer-array-flat-map", () => {
-	testSnapshot(RULE_NAME, rule, {
+	testRuleSnapshot(RULE_NAME, rule, {
 		valid: [
 			"const bar = [1,2,3].map()",
 			"const bar = [1,2,3].map(i => i)",

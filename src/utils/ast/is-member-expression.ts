@@ -1,4 +1,4 @@
-import type { TSESTree } from "@typescript-eslint/types";
+import { TSESTree } from "@typescript-eslint/types";
 
 export function isMemberExpression(
 	node: TSESTree.Node,
@@ -13,8 +13,8 @@ export function isMemberExpression(
 		  }
 		| string
 		| string[],
-) {
-	if (node?.type !== "MemberExpression") {
+): node is TSESTree.MemberExpression {
+	if (node?.type !== TSESTree.AST_NODE_TYPES.MemberExpression) {
 		return false;
 	}
 
@@ -71,7 +71,8 @@ export function isMemberExpression(
 	if (
 		Array.isArray(objects) &&
 		objects.length > 0 &&
-		(node.object.type !== "Identifier" || !objects.includes(node.object.name))
+		(node.object.type !== TSESTree.AST_NODE_TYPES.Identifier ||
+			!objects.includes(node.object.name))
 	) {
 		return false;
 	}

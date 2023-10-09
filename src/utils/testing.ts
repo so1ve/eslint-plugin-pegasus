@@ -3,6 +3,7 @@ import { resolve } from "node:path";
 import type { TSESLint } from "@typescript-eslint/utils";
 import { expect } from "vitest";
 
+import type { InvalidTestCase } from "../../vendor/rule-tester/src";
 import { RuleTester } from "../../vendor/rule-tester/src/RuleTester";
 
 const fixturesDir = resolve(process.cwd(), "test", "fixtures");
@@ -20,7 +21,7 @@ export function getRuleTester() {
 	return ruleTester;
 }
 
-export function test<
+export function testRule<
 	MessageIds extends string,
 	Options extends readonly unknown[] = [],
 	RuleListener extends TSESLint.RuleListener = TSESLint.RuleListener,
@@ -32,7 +33,7 @@ export function test<
 		invalid,
 	}: {
 		valid: string[];
-		invalid: TSESLint.InvalidTestCase<MessageIds, Options>[];
+		invalid: InvalidTestCase<MessageIds, Options>[];
 	},
 ) {
 	const ruleTester = getRuleTester();
@@ -43,7 +44,7 @@ export function test<
 	});
 }
 
-export function testSnapshot<
+export function testRuleSnapshot<
 	MessageIds extends string,
 	Options extends readonly unknown[] = [],
 	RuleListener extends TSESLint.RuleListener = TSESLint.RuleListener,
