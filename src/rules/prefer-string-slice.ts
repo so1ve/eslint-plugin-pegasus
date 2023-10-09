@@ -1,15 +1,8 @@
 // TODO: Math.max
 
 import { getStaticValue } from "@eslint-community/eslint-utils";
-import typeutils from "@typescript-eslint/type-utils";
-import type {
-	ParserServicesWithTypeInformation,
-	TSESLint,
-	TSESTree,
-} from "@typescript-eslint/utils";
+import type { TSESLint, TSESTree } from "@typescript-eslint/utils";
 import { ESLintUtils } from "@typescript-eslint/utils";
-import * as tsutils from "ts-api-utils";
-import ts from "typescript";
 
 import { createRule } from "../utils";
 import { isMethodCall, isNumberLiteral } from "../utils/ast";
@@ -21,6 +14,7 @@ import {
 	wrapFixFunction,
 } from "../utils/common";
 import { replaceArgument } from "../utils/fix";
+import { TypeHelper } from "../utils/ts";
 
 export const RULE_NAME = "prefer-string-slice";
 export type MessageIds = "substr" | "substring";
@@ -48,7 +42,7 @@ interface FixOptions {
 	fixer: TSESLint.RuleFixer;
 	context: TSESLint.RuleContext<MessageIds, Options>;
 	abort: AbortFunction;
-	services: ParserServicesWithTypeInformation;
+	typeHelper: TypeHelper;
 }
 
 function* fixSubstrArguments({
@@ -56,7 +50,7 @@ function* fixSubstrArguments({
 	fixer,
 	context,
 	abort,
-	services,
+	typeHelper,
 }: FixOptions) {
 	const argumentNodes = node.arguments;
 	const [firstArgument, secondArgument] = argumentNodes;
@@ -86,17 +80,10 @@ function* fixSubstrArguments({
 			return;
 		}
 
-		const secondArgumentType = typeutils.getConstrainedTypeAtLocation(
-			services,
-			secondArgument,
-		);
-
-		if (tsutils.isTypeFlagSet(secondArgumentType, ts.TypeFlags.Number)) {
-			return;
+		if (!typeHelper.isNumber(secondArgument)) {
+			yield fixer.insertTextBeforeRange(secondArgumentRange, "Math.max(0, ");
+			yield fixer.insertTextAfterRange(secondArgumentRange, ")");
 		}
-
-		yield fixer.insertTextBeforeRange(secondArgumentRange, "Math.max(0, ");
-		yield fixer.insertTextAfterRange(secondArgumentRange, ")");
 
 		return;
 	}
@@ -126,7 +113,7 @@ function* fixSubstringArguments({
 	fixer,
 	context,
 	abort,
-	services,
+	typeHelper,
 }: FixOptions) {
 	const { sourceCode } = context;
 	const [firstArgument, secondArgument] = node.arguments;
@@ -149,18 +136,14 @@ function* fixSubstringArguments({
 			return;
 		}
 
-		const firstArgumentType = typeutils.getConstrainedTypeAtLocation(
-			services,
-			firstArgument,
-		);
-
-		if (tsutils.isTypeFlagSet(firstArgumentType, ts.TypeFlags.Number)) {
-			return;
+		if (!typeHelper.isNumber(firstArgument)) {
+			const firstArgumentRange = getParenthesizedRange(
+				firstArgument,
+				sourceCode,
+			);
+			yield fixer.insertTextBeforeRange(firstArgumentRange, "Math.max(0, ");
+			yield fixer.insertTextAfterRange(firstArgumentRange, ")");
 		}
-
-		const firstArgumentRange = getParenthesizedRange(firstArgument, sourceCode);
-		yield fixer.insertTextBeforeRange(firstArgumentRange, "Math.max(0, ");
-		yield fixer.insertTextAfterRange(firstArgumentRange, ")");
 
 		return;
 	}
@@ -230,6 +213,7 @@ export default createRule<Options, MessageIds>({
 	defaultOptions: [],
 	create: (context) => {
 		const services = ESLintUtils.getParserServices(context);
+		const typeHelper = new TypeHelper(services);
 
 		return {
 			CallExpression(node) {
@@ -263,7 +247,7 @@ export default createRule<Options, MessageIds>({
 							fixer,
 							context,
 							abort,
-							services,
+							typeHelper,
 						});
 					}),
 				});

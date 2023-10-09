@@ -1,9 +1,9 @@
-import typeutils from "@typescript-eslint/type-utils";
 import { AST_NODE_TYPES, ESLintUtils } from "@typescript-eslint/utils";
 
 import { createRule } from "../utils";
 import { isMethodCall } from "../utils/ast";
 import { removeMethodCall } from "../utils/fix";
+import { TypeHelper } from "../utils/ts";
 
 export const RULE_NAME = "prefer-array-flat-map";
 export type MessageIds = "preferArrayFlatMap";
@@ -26,7 +26,7 @@ export default createRule<Options, MessageIds>({
 	defaultOptions: [],
 	create: (context) => {
 		const services = ESLintUtils.getParserServices(context);
-		const checker = services.program.getTypeChecker();
+		const typeHelper = new TypeHelper(services);
 
 		return {
 			CallExpression(node) {
@@ -68,14 +68,7 @@ export default createRule<Options, MessageIds>({
 				const { property: mapProperty, object: mapObject } =
 					mapCallExpression.callee;
 
-				const mapObjectType = typeutils.getConstrainedTypeAtLocation(
-					services,
-					mapObject,
-				);
-
-				if (
-					!typeutils.isTypeArrayTypeOrUnionOfArrayTypes(mapObjectType, checker)
-				) {
+				if (!typeHelper.isTypeArrayTypeOrUnionOfArrayTypes(mapObject)) {
 					return;
 				}
 
