@@ -101,11 +101,8 @@ function* fixSubstrArguments({
 		return;
 	}
 
-	if (argumentNodes.every((node) => isNumberLiteral(node))) {
-		yield replaceSecondArgument(
-			(firstArgument as TSESTree.NumberLiteral).value +
-				(secondArgument as TSESTree.NumberLiteral).value,
-		);
+	if (isNumberLiteral(firstArgument) && isNumberLiteral(secondArgument)) {
+		yield replaceSecondArgument(firstArgument.value + secondArgument.value);
 
 		return;
 	}
