@@ -1,11 +1,9 @@
-import rule, {
-	MessageIds,
-	Options,
-	RULE_NAME,
-} from "../src/rules/prefer-array-some";
-import { testRuleSnapshot, testRule } from "../src/utils/testing";
 import dedent from "dedent";
-import { InvalidTestCase } from "../vendor/rule-tester/src";
+
+import type { MessageIds, Options } from "../src/rules/prefer-array-some";
+import rule, { RULE_NAME } from "../src/rules/prefer-array-some";
+import { testRule, testRuleSnapshot } from "../src/utils/testing";
+import type { InvalidTestCase } from "../vendor/rule-tester/src";
 
 const invalidCase = ({
 	code,
@@ -73,7 +71,8 @@ describe("prefer-array-some", () => {
 				"do {foo.shift();} while (foo.find(fn));",
 				"for (; foo.find(fn); ) foo.shift();",
 			].flatMap((code) => {
-				code = "const foo = [];" + code;
+				code = `const foo = [];${code}`;
+
 				return [
 					invalidCase({
 						code,
@@ -199,6 +198,6 @@ describe("prefer-array-some", () => {
 			"foo.find(fn) != undefined",
 			"foo.find(fn) !== undefined",
 			'a = (( ((foo.find(fn))) == ((null)) )) ? "no" : "yes";',
-		].map((code) => "const foo = []; " + code),
+		].map((code) => `const foo = []; ${code}`),
 	});
 });

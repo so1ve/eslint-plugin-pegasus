@@ -1,5 +1,6 @@
-import { TSESTree } from "@typescript-eslint/types";
-import { isUndefined, isCallExpression, isMethodCall } from "../ast";
+import type { TSESTree } from "@typescript-eslint/types";
+
+import { isCallExpression, isMethodCall, isUndefined } from "../ast";
 
 // AST Types:
 // https://github.com/eslint/espree/blob/master/lib/ast-node-types.js#L18
