@@ -21,10 +21,9 @@ $ pnpm add -D eslint-plugin-pegasus
 🔧 Automatically fixable by the [`--fix` CLI option](https://eslint.org/docs/user-guide/command-line-interface#--fix).\
 💭 Requires type information.
 
-| Name                                                           | Description                                                              | 🔧  | 💭  |
-| :------------------------------------------------------------- | :----------------------------------------------------------------------- | :-- | :-- |
-| [prefer-string-slice](docs/rules/prefer-string-slice.md)       | Prefer `String#slice()` over `String#substr()` and `String#substring()`. | 🔧  | 💭  |
-| [prefer-top-level-await](docs/rules/prefer-top-level-await.md) | Prefer `.flatMap(…)` over `.map(…).flat()`.                              | 🔧  | 💭  |
+| Name                                                           | Description                                 | 🔧  | 💭  |
+| :------------------------------------------------------------- | :------------------------------------------ | :-- | :-- |
+| [prefer-top-level-await](docs/rules/prefer-top-level-await.md) | Prefer `.flatMap(…)` over `.map(…).flat()`. | 🔧  | 💭  |
 
 <!-- end auto-generated rules list -->
 
