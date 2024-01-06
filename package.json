@@ -1,7 +1,7 @@
 {
 	"name": "eslint-plugin-pegasus",
 	"version": "0.0.0",
-	"packageManager": "pnpm@8.8.0",
+	"packageManager": "pnpm@8.14.0",
 	"author": "Ray <i@mk1.io> (@so1ve)",
 	"description": "",
 	"keywords": [],
@@ -63,7 +63,7 @@
 		"@types/lodash.merge": "^4.6.7",
 		"@types/node": "^20.8.3",
 		"@types/semver": "^7.5.3",
-		"@typescript-eslint/typescript-estree": "6.7.4",
+		"@typescript-eslint/typescript-estree": "6.18.0",
 		"ajv": "^6.10.0",
 		"bumpp": "^9.2.0",
 		"dedent": "^1.5.1",
